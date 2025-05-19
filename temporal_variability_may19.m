@@ -4,21 +4,20 @@
 %% Github upload May 19 2025
 % dependencies
 % cmocean 
-%~/Downloads/NOAA_GDP310_drifter_monthlymeans.nc
+%./data/NOAA_GDP310_drifter_monthlymeans.nc
 % File_y1999-2018_buoy_monclim_zonmean.nc
-%File_y1999-2018_buoy_monclim.nc
-%~/Downloads/sst.ltm.1991-2020.nc
-%~/Downloads/File_y1999-2018_monclim_taux.nc
-%File_y1999-2018_buoy_monmeans_zonmean.nc
-%mitgcm_offline_KE_monthly_zonmean.mat
+%./data/sst.ltm.1991-2020.nc
+%./data/File_y1999-2018_monclim_taux.nc
+% File_y1999-2018_buoy_monmeans_zonmean.nc
+% mitgcm_offline_KE_monthly_zonmean.mat
 clear all;
 close all;
-addpath ~/'OneDrive - NASA'/software/rainevent-master/cmocean/
+addpath ./cmocean/
 stidxlat=253
 lenidxlat=80
 stidxlon=49
 lenidxlon=284
-pathdr='~/Downloads/NOAA_GDP310_drifter_monthlymeans.nc'
+pathdr='./data/NOAA_GDP310_drifter_monthlymeans.nc'
 V=squeeze(double(ncread(pathdr,'V',[stidxlat stidxlon 1],[lenidxlat lenidxlon 12])));
 U=squeeze(double(ncread(pathdr,'U',[stidxlat stidxlon 1],[lenidxlat lenidxlon 12])));
 
@@ -309,9 +308,9 @@ ylim([-8 8])
 grid on
 
 
-latsst=ncread('~/Downloads/sst.ltm.1991-2020.nc','lat',[81],[20]);
-lonsst=ncread('~/Downloads/sst.ltm.1991-2020.nc','lon',[193],[71]);
-sstltm=squeeze(mean(double(ncread('~/Downloads/sst.ltm.1991-2020.nc','sst',[193 81 1],[71 20 12])),1));
+latsst=ncread('./data/sst.ltm.1991-2020.nc','lat',[81],[20]);
+lonsst=ncread('./data/sst.ltm.1991-2020.nc','lon',[193],[71]);
+sstltm=squeeze(mean(double(ncread('./data/sst.ltm.1991-2020.nc','sst',[193 81 1],[71 20 12])),1));
 
 subplot(1,2,2),...
 contourf(1:12,latsst,squeeze(sstltm),20:.25:30);
@@ -840,7 +839,7 @@ set(gca,'Fontsize',15)
 %%
 
 
-tauxmit=squeeze(mean(double(ncread('~/Downloads/File_y1999-2018_monclim_taux.nc','Um_Ext').*2.5.*1029),1));
+tauxmit=squeeze(mean(double(ncread('./data/File_y1999-2018_monclim_taux.nc','Um_Ext').*2.5.*1029),1));
 w50mmitasym2=zeros(400,12);
 w50mmitsym=zeros(400,12);
 w50mmitasym=zeros(400,12);
@@ -985,9 +984,7 @@ set(gcf,'color','w')
 %print(gcf,'MITgcmclim_seasonalcycle_Wzonmeansection_4panel.png','-dpng','-r200')
 
 %%
-wmitmapmonclim=86400.*squeeze(mean(double(ncread('File_y1999-2018_buoy_monclim.nc','w',[1 1 20 1],[1420 400 2 12])),3));
-
-lonmit=ncread('File_y1999-2018_buoy_monclim.nc','longitude');
+load('./data/wmitmapmonclimmay19.mat');
 
 for i = 1:4
     clear wmitmap
