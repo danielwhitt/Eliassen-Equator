@@ -4,12 +4,13 @@
 %% Github upload May 19 2025
 % dependencies
 % cmocean 
-%./data/NOAA_GDP310_drifter_monthlymeans.nc
-% File_y1999-2018_buoy_monclim_zonmean.nc
-%./data/sst.ltm.1991-2020.nc
+% ./data/NOAA_GDP310_drifter_monthlymeans.nc
+% ./data/File_y1999-2018_buoy_monclim_zonmean.nc
+% ./data/sst.ltm.1991-2020.nc
 %./data/File_y1999-2018_monclim_taux.nc
-% File_y1999-2018_buoy_monmeans_zonmean.nc
+% ./data/File_y1999-2018_buoy_monmeans_zonmean.nc
 % mitgcm_offline_KE_monthly_zonmean.mat
+% ./data/wmitmapmonclimmay19.mat
 clear all;
 close all;
 addpath ./cmocean/
@@ -62,15 +63,15 @@ end
 
 
 
-v15mmit=squeeze(mean(ncread('File_y1999-2018_buoy_monclim_zonmean.nc','v',[1 1 6 1],[1 400 2 12]),3));
-v1p25mmit=squeeze(mean(ncread('File_y1999-2018_buoy_monclim_zonmean.nc','v',[1 1 1 1],[1 400 1 12]),3));
+v15mmit=squeeze(mean(ncread('./data/File_y1999-2018_buoy_monclim_zonmean.nc','v',[1 1 6 1],[1 400 2 12]),3));
+v1p25mmit=squeeze(mean(ncread('./data/File_y1999-2018_buoy_monclim_zonmean.nc','v',[1 1 1 1],[1 400 1 12]),3));
 
-u15mmit=squeeze(mean(ncread('File_y1999-2018_buoy_monclim_zonmean.nc','u',[1 1 6 1],[1 400 2 12]),3));
+u15mmit=squeeze(mean(ncread('./data/File_y1999-2018_buoy_monclim_zonmean.nc','u',[1 1 6 1],[1 400 2 12]),3));
 
-latmit=ncread('File_y1999-2018_buoy_monclim_zonmean.nc','y',[1],[400]);
-zmit=ncread('File_y1999-2018_buoy_monclim_zonmean.nc','depth',[1],[136]);
+latmit=ncread('./data/File_y1999-2018_buoy_monclim_zonmean.nc','y',[1],[400]);
+zmit=ncread('./data/File_y1999-2018_buoy_monclim_zonmean.nc','depth',[1],[136]);
 
-w50mmit=86400.*squeeze(mean(ncread('File_y1999-2018_buoy_monclim_zonmean.nc','w',[1 1 20 1],[1 400 2 12]),3));
+w50mmit=86400.*squeeze(mean(ncread('./data/File_y1999-2018_buoy_monclim_zonmean.nc','w',[1 1 20 1],[1 400 2 12]),3));
 
 
 figure('position',[50 50 800 800]);
@@ -292,7 +293,7 @@ print(gcf,'MITgcmclim_seasonalcycle_dVdyW_scatter.png','-dpng','-r200')
 
 
 
-SSTmit=squeeze(mean(ncread('File_y1999-2018_buoy_monclim_zonmean.nc','theta',[1 1 1 1],[1 400 1 12]),3));
+SSTmit=squeeze(mean(ncread('./data/File_y1999-2018_buoy_monclim_zonmean.nc','theta',[1 1 1 1],[1 400 1 12]),3));
 figure;
 subplot(1,2,1),...
 contourf(1:12,latmit,squeeze(SSTmit),20:.25:30);
@@ -326,26 +327,26 @@ ylim([-8 8])
 grid on
 
 
-load mitgcm_offline_KE_monthly_zonmean.mat
+load('./data/mitgcm_offline_KE_monthly_zonmean.mat')
 
 VVmit15m=squeeze(mean(mean(SFnow(:,6:7,:,2,:),5),2));
 UUmit15m=squeeze(mean(mean(SFnow(:,6:7,:,1,:),5),2));
 UVmit15m=squeeze(mean(mean(SFnow(:,6:7,:,4,:),5),2));
 
-umit=ncread('File_y1999-2018_buoy_monmeans_zonmean.nc','u');
+umit=ncread('./data/File_y1999-2018_buoy_monmeans_zonmean.nc','u');
 umit15mall=squeeze(mean(umit(1,:,6:7,:),3));
 umit15mc=reshape(repmat(mean(reshape(umit15mall,[400 12 20]),3),[1 1 20]),[400 240]);
 umit15mp=umit15mall-umit15mc;
-timemitmat=double(ncread('File_y1999-2018_buoy_monmeans_zonmean.nc','time')./24+datenum(1950,1,1));
+timemitmat=double(ncread('./data/File_y1999-2018_buoy_monmeans_zonmean.nc','time')./24+datenum(1950,1,1));
 
-vmit=ncread('File_y1999-2018_buoy_monmeans_zonmean.nc','v');
+vmit=ncread('./data/File_y1999-2018_buoy_monmeans_zonmean.nc','v');
 vmit15mall=squeeze(mean(vmit(1,:,6:7,:),3));
 vmit15mc=reshape(repmat(mean(reshape(vmit15mall,[400 12 20]),3),[1 1 20]),[400 240]);
 vmit15mp=vmit15mall-vmit15mc;
 dVdymit15mp=zeros(size(vmit15mp));
 dVdymit15mc=zeros(size(vmit15mc));
 
-Tmit=ncread('File_y1999-2018_buoy_monmeans_zonmean.nc','theta');
+Tmit=ncread('./data/File_y1999-2018_buoy_monmeans_zonmean.nc','theta');
 SSTmitall=squeeze(mean(Tmit(1,:,1,:),3));
 SSTmitc=reshape(repmat(mean(reshape(SSTmitall,[400 12 20]),3),[1 1 20]),[400 240]);
 SSTmitp=SSTmitall-SSTmitc;
@@ -424,14 +425,14 @@ print(gcf,'MITgcmclim_seasonalcycle_U2andV2andUV.png','-dpng','-r200');
 
 
 
-wmit=86400.*ncread('File_y1999-2018_buoy_monmeans_zonmean.nc','w');
-Tmit=squeeze(double(ncread('File_y1999-2018_buoy_monmeans_zonmean.nc','theta')));
+wmit=86400.*ncread('./data/File_y1999-2018_buoy_monmeans_zonmean.nc','w');
+Tmit=squeeze(double(ncread('./data/File_y1999-2018_buoy_monmeans_zonmean.nc','theta')));
 
 wmit50mall=squeeze(mean(wmit(1,:,20:21,:),3));
 wmit50mc=reshape(repmat(mean(reshape(wmit50mall,[400 12 20]),3),[1 1 20]),[400 240]);
 wmit50mp=wmit50mall-wmit50mc;
 
-vmit=ncread('File_y1999-2018_buoy_monmeans_zonmean.nc','v');
+vmit=ncread('./data/File_y1999-2018_buoy_monmeans_zonmean.nc','v');
 vmit15mall=squeeze(mean(vmit(1,:,6:7,:),3));
 vmit15mc=reshape(repmat(mean(reshape(vmit15mall,[400 12 20]),3),[1 1 20]),[400 240]);
 vmit15mp=vmit15mall-vmit15mc;
@@ -452,11 +453,11 @@ dVdymit1p25mc(2:end-1,:)=86400.*(vmit1p25mc(3:end,:)-vmit1p25mc(1:end-2,:))./(11
 
 
 
-umit=ncread('File_y1999-2018_buoy_monmeans_zonmean.nc','u');
+umit=ncread('./data/File_y1999-2018_buoy_monmeans_zonmean.nc','u');
 umit15mall=squeeze(mean(umit(1,:,6:7,:),3));
 umit15mc=reshape(repmat(mean(reshape(umit15mall,[400 12 20]),3),[1 1 20]),[400 240]);
 umit15mp=umit15mall-umit15mc;
-timemitmat=double(ncread('File_y1999-2018_buoy_monmeans_zonmean.nc','time')./24+datenum(1950,1,1));
+timemitmat=double(ncread('./data/File_y1999-2018_buoy_monmeans_zonmean.nc','time')./24+datenum(1950,1,1));
 
 
 
@@ -944,8 +945,8 @@ legend('intraseasonal std','interannual std','mean seasonal cycle std','location
 
 print(gcf,'MITgcm_seasonalcycleandstdevanoms_WwithU_3pan.png','-dpng','-r200')
 %%
-wmitmonclim=86400.*squeeze(ncread('File_y1999-2018_buoy_monclim_zonmean.nc','w',[1 1 1 1],[1 400 136 12]));
-Tmitmonclim=squeeze(ncread('File_y1999-2018_buoy_monclim_zonmean.nc','theta',[1 1 1 1],[1 400 136 12]));
+wmitmonclim=86400.*squeeze(ncread('./data/File_y1999-2018_buoy_monclim_zonmean.nc','w',[1 1 1 1],[1 400 136 12]));
+Tmitmonclim=squeeze(ncread('./data/File_y1999-2018_buoy_monclim_zonmean.nc','theta',[1 1 1 1],[1 400 136 12]));
 
 figure('position',[50 50 1200 900]);
 for i = 1:4
