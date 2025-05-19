@@ -9,7 +9,7 @@
 % ./data/sst.ltm.1991-2020.nc
 %./data/File_y1999-2018_monclim_taux.nc
 % ./data/File_y1999-2018_buoy_monmeans_zonmean.nc
-% mitgcm_offline_KE_monthly_zonmean.mat
+% ./data/mitgcm_offline_KE_monthly_zonmean.mat
 % ./data/wmitmapmonclimmay19.mat
 clear all;
 close all;
