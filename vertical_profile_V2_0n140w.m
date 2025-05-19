@@ -4,17 +4,17 @@
 %% Written With Matlab v2023b 
 %% Github upload May 19 2025
 % dependencies
-%~/'OneDrive - NASA'/documents/mitgcm_offline_KE_avg.mat
-%~/OneDrive - NASA/documents/mitgcm20yr_buoyavg.nc
-%~/Downloads/adcp0n140w_dy.nc
+%./data/mitgcm_offline_KE_avg.mat
+%./data/mitgcm20yr_buoyavg.nc
+%./data/adcp0n140w_dy.nc
 clear all;
 close all;
-load ~/'OneDrive - NASA'/documents/mitgcm_offline_KE_avg.mat
-zmit=squeeze(ncread('~/OneDrive - NASA/documents/mitgcm20yr_buoyavg.nc','depth'));
-latmit=squeeze(ncread('~/OneDrive - NASA/documents/mitgcm20yr_buoyavg.nc','latitude'));
-lonmit=squeeze(ncread('~/OneDrive - NASA/documents/mitgcm20yr_buoyavg.nc','longitude'));
-umit3d=squeeze(ncread('~/OneDrive - NASA/documents/mitgcm20yr_buoyavg.nc','u'));
-vmit3d=squeeze(ncread('~/OneDrive - NASA/documents/mitgcm20yr_buoyavg.nc','v'));
+load ./data/mitgcm_offline_KE_avg.mat
+zmit=squeeze(ncread('./data/mitgcm20yr_buoyavg.nc','depth'));
+latmit=squeeze(ncread('./data/mitgcm20yr_buoyavg.nc','latitude'));
+lonmit=squeeze(ncread('./data/mitgcm20yr_buoyavg.nc','longitude'));
+umit3d=squeeze(ncread('./data/mitgcm20yr_buoyavg.nc','u'));
+vmit3d=squeeze(ncread('./data/mitgcm20yr_buoyavg.nc','v'));
 umit0n140w=squeeze(umit3d(561,201,:));
 vmit0n140w=squeeze(vmit3d(561,201,:));
 clear umit3d vmit3d
@@ -34,9 +34,9 @@ subplot(1,3,3),...
 plot(squeeze(SFnow(561,201,:,4))-umit0n140w.*vmit0n140w,zmit);
 ylim([-300 0])
 
-uobs=squeeze(double(ncread('~/Downloads/adcp0n140w_dy.nc','u_1205')));
-vobs=squeeze(double(ncread('~/Downloads/adcp0n140w_dy.nc','v_1206')));
-depth=double(ncread('~/Downloads/adcp0n140w_dy.nc','depth'));
+uobs=squeeze(double(ncread('./data/adcp0n140w_dy.nc','u_1205')));
+vobs=squeeze(double(ncread('./data/adcp0n140w_dy.nc','v_1206')));
+depth=double(ncread('./data/adcp0n140w_dy.nc','depth'));
 
 U2obs=nanmean((uobs./100).^2,2);
 Uobsm=nanmean(uobs./100,2);
