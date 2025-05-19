@@ -1,4 +1,4 @@
-Plots to make figures for Whitt et al. (2025) "Eddies drive meridionally asymmetric upwelling in the equatorial Pacific" to be submitted to JPO May 2025.
+Matlab to make figures for Whitt et al. (2025) "Eddies drive meridionally asymmetric upwelling in the equatorial Pacific" to be submitted to JPO May 2025.
 
 F1 (derecho)
 F2 (wyrtki_diagram_calculations.m)
