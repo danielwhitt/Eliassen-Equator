@@ -134,7 +134,7 @@ close all;
 id='MATLAB:polyfit:RepeatedPointsOrRescale'
 
 disp('Risien and Chelton Ekman transports...')
-addpath ~/'OneDrive - NASA'/software/rainevent-master/cmocean/
+addpath ./cmocean/
 monms={'january','february','march','april','may','june','july','august','september','october','november','december'};
 latitudewstress=ncread('./data/wind_stress_zonal_monthly_maps.nc','latitude',[241],[80]);
 longitudewstress=ncread('./data/wind_stress_zonal_monthly_maps.nc','longitude',[769],[284]);
