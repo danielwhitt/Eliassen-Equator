@@ -4,27 +4,27 @@
 %% Written With Matlab v2023b 
 %% Second upload May 19 2025
 %% depednencies:
-% ~/OneDrive - NASA/documents/mitgcm_grid.mat
-% ~/OneDrive - NASA/documents/mitgcm_RF.mat
-% ~/OneDrive - NASA/documents/mitgcm_grid_3.mat
-% ~/OneDrive - NASA/documents/mitgcm_grid_2.mat
-% ~/OneDrive - NASA/documents/mitgcm20yr_buoyavg.nc
-% ~/OneDrive - NASA/documents/File_y1999_y2018_ub.nc
-% ~/OneDrive - NASA/documents/File_y1999_y2018_vb.nc
-% ~/OneDrive - NASA/documents/mitgcm_offline_salt_flux_avg_anoms.mat
-% ~/OneDrive - NASA/documents/mitgcm_suf_avg.nc
-% ~/OneDrive - NASA/documents/mitgcm_hb_avg.nc
+% ./data/mitgcm_grid.mat
+% ./data/mitgcm_RF.mat
+% ./data/mitgcm_grid_3.mat
+% ./data/mitgcm_grid_2.mat
+% ./data/mitgcm20yr_buoyavg.nc
+% ./data/File_y1999_y2018_ub.nc
+% ./data/File_y1999_y2018_vb.nc
+% ./data/mitgcm_offline_salt_flux_avg_anoms.mat
+% ./data/mitgcm_suf_avg.nc
+% ./data/mitgcm_hb_avg.nc
 clear all
 close all
 restoredefaultpath;
-addpath ~/'OneDrive - NASA'/software/rainevent-master/seawater/
-addpath ~/'OneDrive - NASA'/software/rainevent-master/cmocean/
+addpath ./seawater/
+addpath ./cmocean/
 
 % set up mit grid
-load('~/OneDrive - NASA/documents/mitgcm_grid.mat','DRF','RAC','hFacC');
-load('~/OneDrive - NASA/documents/mitgcm_RF.mat','RF');
-load('~/OneDrive - NASA/documents/mitgcm_grid_3.mat','DXC','DXG','DYC','DYG');
-load('~/OneDrive - NASA/documents/mitgcm_grid_2.mat','RAS','RAW','hFacS','hFacW');
+load('./data/mitgcm_grid.mat','DRF','RAC','hFacC');
+load('./data/mitgcm_RF.mat','RF');
+load('./data/mitgcm_grid_3.mat','DXC','DXG','DYC','DYG');
+load('./data/mitgcm_grid_2.mat','RAS','RAW','hFacS','hFacW');
 
 RAC=RAC(41:1460,41:440);
 hFacC=hFacC(41:1460,41:440,1:136);
@@ -68,14 +68,14 @@ DYG=DYG(xidxme,:);
 
 
 % load mit coordinates
-zmit=squeeze(ncread('~/OneDrive - NASA/documents/mitgcm20yr_buoyavg.nc','depth'));
-ymit=squeeze(ncread('~/OneDrive - NASA/documents/mitgcm20yr_buoyavg.nc','latitude')).*111300;
-latmit=repmat(ncread('~/OneDrive - NASA/documents/mitgcm20yr_buoyavg.nc','latitude')',[nxm 1]);
+zmit=squeeze(ncread('./data/mitgcm20yr_buoyavg.nc','depth'));
+ymit=squeeze(ncread('./data/mitgcm20yr_buoyavg.nc','latitude')).*111300;
+latmit=repmat(ncread('./data/mitgcm20yr_buoyavg.nc','latitude')',[nxm 1]);
 
-lonmit=repmat(ncread('~/OneDrive - NASA/documents/mitgcm20yr_buoyavg.nc','longitude'),[1 400]);
+lonmit=repmat(ncread('./data/mitgcm20yr_buoyavg.nc','longitude'),[1 400]);
 lonmit=lonmit(xidxme,:);
 
-xmit=repmat(squeeze(ncread('~/OneDrive - NASA/documents/mitgcm20yr_buoyavg.nc','longitude')).*111300, [1 400]);
+xmit=repmat(squeeze(ncread('./data/mitgcm20yr_buoyavg.nc','longitude')).*111300, [1 400]);
 xmit=xmit(xidxme,:);
 xmit=xmit-mean(xmit(:));
 xmit=xmit.*cosd(latmit);
@@ -88,11 +88,11 @@ xmit=xmit.*cosd(latmit);
 xmit3d=repmat(xmit,[1 1 136]);
 ymit3d=repmat(ymit',[nxm 1  136]);
 
-umit3d=squeeze(ncread('~/OneDrive - NASA/documents/mitgcm20yr_buoyavg.nc','u'));
+umit3d=squeeze(ncread('./data/mitgcm20yr_buoyavg.nc','u'));
 umit3d=umit3d(xidxme,:,:);
-vmit3d=squeeze(ncread('~/OneDrive - NASA/documents/mitgcm20yr_buoyavg.nc','v'));
+vmit3d=squeeze(ncread('./data/mitgcm20yr_buoyavg.nc','v'));
 vmit3d=vmit3d(xidxme,:,:);
-wmit3d=squeeze(ncread('~/OneDrive - NASA/documents/mitgcm20yr_buoyavg.nc','w'));
+wmit3d=squeeze(ncread('./data/mitgcm20yr_buoyavg.nc','w'));
 wmit3d=wmit3d(xidxme,:,:);
 
 dvdy3d=zeros(size(vmit3d,1),size(vmit3d,2),size(vmit3d,3)+1);
@@ -136,7 +136,7 @@ wdvdzme=squeeze(mean(wmit3d,1,'omitnan')).*squeeze(mean(dvdzme,1,'omitnan')); % 
 
 %% generate zonal mean variables <U>, <V>, <T>, <W>, <S>
 umit=squeeze(mean(umit3d,1,'omitnan'));
-Tmit3d=ncread('~/OneDrive - NASA/documents/mitgcm20yr_buoyavg.nc','theta');
+Tmit3d=ncread('./data/mitgcm20yr_buoyavg.nc','theta');
 Tmit3d=Tmit3d(xidxme,:,:);
 Tmit=squeeze(mean(Tmit3d,1,'omitnan'));
 
@@ -184,18 +184,18 @@ vmit=squeeze(mean(vmit3d,1,'omitnan'));
 
 
 % advection
-Um_Advecwcor3d=squeeze(double(ncread('~/OneDrive - NASA/documents/File_y1999_y2018_ub.nc','Um_Advec')));
+Um_Advecwcor3d=squeeze(double(ncread('./data/File_y1999_y2018_ub.nc','Um_Advec')));
 Um_Advecwcor3d=Um_Advecwcor3d(xidxme,:,:);
 Um_Cor3d=repmat(double(reshape(f_gm',[1 400 136])),[nxm 1 1]).*vmit3d;
 %Um_Advecan3d=Um_Advecwcor-Um_Cor3d +repmat(reshape(vdudyme+wdudzme+ududxme,[1 400 136]),[nxm 1 1]);
 Um_Cor=squeeze(mean(Um_Cor3d,1,'omitnan'));
 Um_Advec=squeeze(mean(Um_Advecwcor3d,1,'omitnan'))-Um_Cor;
 Um_Advecan=Um_Advec+vdudyme+wdudzme+ududxme;
-TOTUTEND3d=squeeze(double(ncread('~/OneDrive - NASA/documents/File_y1999_y2018_ub.nc','TOTUTEND'))./86400);
+TOTUTEND3d=squeeze(double(ncread('./data/File_y1999_y2018_ub.nc','TOTUTEND'))./86400);
 TOTUTEND3d=TOTUTEND3d(xidxme,:,:);
 
 % vmix terms
-VISRI_Um=double(squeeze(ncread('~/OneDrive - NASA/documents/File_y1999_y2018_ub.nc','VISrI_Um')));
+VISRI_Um=double(squeeze(ncread('./data/File_y1999_y2018_ub.nc','VISrI_Um')));
 VISRI_Um=VISRI_Um(xidxme,:,:);
 VISRI_Um(:,:,1)=0;
 Um_Impl=zeros(size(VISRI_Um));
@@ -203,14 +203,14 @@ Um_Impl(:,:,1:end-1)=(VISRI_Um(:,:,2:end)-VISRI_Um(:,:,1:end-1));
 Um_Impl(:,:,end)=Um_Impl(:,:,end-1);% not bottom
 normfac=double(squeeze(hFacW.*repmat(RAW,[1 1 136])).*DRF);
 Um_Impl=Um_Impl./normfac;
-Um_Ext=squeeze(double(ncread('~/OneDrive - NASA/documents/File_y1999_y2018_ub.nc','Um_Ext')));
+Um_Ext=squeeze(double(ncread('./data/File_y1999_y2018_ub.nc','Um_Ext')));
 Um_Ext=Um_Ext(xidxme,:,:);
 Um_Ext(isnan(Um_Ext))=0;
 
 % dissipation terms (very small)
-AB_gU=double(squeeze(ncread('~/OneDrive - NASA/documents/File_y1999_y2018_ub.nc','AB_gU')));
+AB_gU=double(squeeze(ncread('./data/File_y1999_y2018_ub.nc','AB_gU')));
 AB_gU=AB_gU(xidxme,:,:);
-Um_Diss=double(squeeze(ncread('~/OneDrive - NASA/documents/File_y1999_y2018_ub.nc','Um_Diss')));
+Um_Diss=double(squeeze(ncread('./data/File_y1999_y2018_ub.nc','Um_Diss')));
 Um_Diss=Um_Diss(xidxme,:,:);
 
 X=(squeeze(mean(Um_Impl+Um_Ext+Um_Diss+AB_gU,1,'omitnan'))+Um_Advecan)';
@@ -221,9 +221,9 @@ X0(1,:)=X0(2,:);
 
 
 % zonal PGF for vg
-Um_dPHdx3d=double(squeeze(ncread('~/OneDrive - NASA/documents/File_y1999_y2018_ub.nc','Um_dPHdx')));
+Um_dPHdx3d=double(squeeze(ncread('./data/File_y1999_y2018_ub.nc','Um_dPHdx')));
 Um_dPHdx3d=Um_dPHdx3d(xidxme,:,:);
-%ETAN=double(squeeze(ncread('~/OneDrive - NASA/documents/File_y1999_y2018_etan.nc','ETAN')));
+%ETAN=double(squeeze(ncread('./data/File_y1999_y2018_etan.nc','ETAN')));
 %ETAN=ETAN(xidxme,:);
 %Um_dPSdx3d=zeros(size(Um_dPHdx3d));
 %Um_dPSdx3d(2:end-1,:,:)=-repmat(g.*(ETAN(3:end,:)-ETAN(1:end-2,:))./(2.*DXC(2:end-1,:)),[1 1 136]);
@@ -234,24 +234,24 @@ clear AB_gU Um_Diss Um_Ext Um_Impl Um_dPHdx3d Um_dPsdx3dalt TOTUTEND3d
 
 %% meridional momentum budget terms
 
-Vm_dPHdy3d=double(squeeze(ncread('~/OneDrive - NASA/documents/File_y1999_y2018_vb.nc','Vm_dPHdy')));
+Vm_dPHdy3d=double(squeeze(ncread('./data/File_y1999_y2018_vb.nc','Vm_dPHdy')));
 Vm_dPHdy3d=Vm_dPHdy3d(xidxme,:,:);
 
-Vm_Diss=double(squeeze(ncread('~/OneDrive - NASA/documents/File_y1999_y2018_vb.nc','Vm_Diss')));
+Vm_Diss=double(squeeze(ncread('./data/File_y1999_y2018_vb.nc','Vm_Diss')));
 Vm_Diss=Vm_Diss(xidxme,:,:);
 
 
-TOTVTEND3d=double(squeeze(ncread('~/OneDrive - NASA/documents/File_y1999_y2018_vb.nc','TOTVTEND')))./86400;
+TOTVTEND3d=double(squeeze(ncread('./data/File_y1999_y2018_vb.nc','TOTVTEND')))./86400;
 TOTVTEND3d=TOTVTEND3d(xidxme,:,:);
 
-Vm_Advecwcor3d=squeeze(double(ncread('~/OneDrive - NASA/documents/File_y1999_y2018_vb.nc','Vm_Advec')));
+Vm_Advecwcor3d=squeeze(double(ncread('./data/File_y1999_y2018_vb.nc','Vm_Advec')));
 Vm_Advecwcor3d=Vm_Advecwcor3d(xidxme,:,:);
 Vm_Cor3d=-repmat(double(reshape(f_gm',[1 400 136])),[nxm 1 1]).*umit3d;
 Vm_Cor=squeeze(mean(Vm_Cor3d,1,'omitnan'));
 Vm_Advec=squeeze(mean(Vm_Advecwcor3d,1,'omitnan'))-Vm_Cor;
 Vm_Advecan=Vm_Advec+vdvdyme+wdvdzme+udvdxme;
 
-VISRI_Vm=double(squeeze(ncread('~/OneDrive - NASA/documents/File_y1999_y2018_vb.nc','VISrI_Vm')));
+VISRI_Vm=double(squeeze(ncread('./data/File_y1999_y2018_vb.nc','VISrI_Vm')));
 VISRI_Vm=VISRI_Vm(xidxme,:,:);
 VISRI_Vm(:,:,1)=0;
 Vm_Impl=zeros(size(VISRI_Vm));
@@ -259,7 +259,7 @@ Vm_Impl(:,:,1:end-1)=(VISRI_Vm(:,:,2:end)-VISRI_Vm(:,:,1:end-1));
 Vm_Impl(:,:,end)=Vm_Impl(:,:,end-1);% not bottom
 normfac=double(squeeze(hFacS.*repmat(RAS,[1 1 136])).*DRF);
 Vm_Impl=Vm_Impl./normfac;
-Vm_Ext=squeeze(double(ncread('~/OneDrive - NASA/documents/File_y1999_y2018_vb.nc','Vm_Ext')));
+Vm_Ext=squeeze(double(ncread('./data/File_y1999_y2018_vb.nc','Vm_Ext')));
 Vm_Ext=Vm_Ext(xidxme,:,:);
 Vm_Ext(isnan(Vm_Ext))=0;
 
@@ -457,19 +457,19 @@ print(gcf,'MITgcm_interpolate_vg.png','-r200','-dpng')
 
 %% temperature budget terms
 
-TFLUX=double(ncread('~/OneDrive - NASA/documents/mitgcm_suf_avg.nc','TFLUX'));
+TFLUX=double(ncread('./data/mitgcm_suf_avg.nc','TFLUX'));
 TFLUX=TFLUX(xidxme,:);
-surfQsw=double(ncread('~/OneDrive - NASA/documents/mitgcm_suf_avg.nc','oceQsw'));
+surfQsw=double(ncread('./data/mitgcm_suf_avg.nc','oceQsw'));
 surfQsw=surfQsw(xidxme,:);
 
-ADVr_TH=double(ncread('~/OneDrive - NASA/documents/mitgcm_hb_avg.nc','ADVr_TH'));
+ADVr_TH=double(ncread('./data/mitgcm_hb_avg.nc','ADVr_TH'));
 ADVr_TH=ADVr_TH(xidxme,:,:);
 ADVr_TH(:,:,1)=0;
 
-ADVx_TH=double(ncread('~/OneDrive - NASA/documents/mitgcm_hb_avg.nc','ADVx_TH'));
+ADVx_TH=double(ncread('./data/mitgcm_hb_avg.nc','ADVx_TH'));
 ADVx_TH=ADVx_TH(xidxme,:,:);
 
-ADVy_TH=double(ncread('~/OneDrive - NASA/documents/mitgcm_hb_avg.nc','ADVy_TH'));
+ADVy_TH=double(ncread('./data/mitgcm_hb_avg.nc','ADVy_TH'));
 ADVy_TH=ADVy_TH(xidxme,:,:);
 
 CellVol = double(repmat(RAC,[1 1 136]).*DRF.*hFacC);
@@ -506,16 +506,16 @@ dTdzme(:,:,1)=dTdzme(:,:,2);
 
 wdTdzme=squeeze(mean(wmit3d,1,'omitnan')).*squeeze(mean(dTdzme,1,'omitnan')); %
 
-DFrI_TH=double(ncread('~/OneDrive - NASA/documents/mitgcm_hb_avg.nc','DFrI_TH'));
+DFrI_TH=double(ncread('./data/mitgcm_hb_avg.nc','DFrI_TH'));
 DFrI_TH=DFrI_TH(xidxme,:,:);
 
-KPPg_TH=double(ncread('~/OneDrive - NASA/documents/mitgcm_hb_avg.nc','KPPg_TH'));
+KPPg_TH=double(ncread('./data/mitgcm_hb_avg.nc','KPPg_TH'));
 KPPg_TH=KPPg_TH(xidxme,:,:);
 
-TOTTTEND3d=double(ncread('~/OneDrive - NASA/documents/mitgcm_hb_avg.nc','TOTTTEND'))./86400;
+TOTTTEND3d=double(ncread('./data/mitgcm_hb_avg.nc','TOTTTEND'))./86400;
 TOTTTEND3d=TOTTTEND3d(xidxme,:,:);
 
-WTHMASS=squeeze(double(ncread('~/OneDrive - NASA/documents/mitgcm_hb_avg.nc','WTHMASS')));
+WTHMASS=squeeze(double(ncread('./data/mitgcm_hb_avg.nc','WTHMASS')));
 WTHMASS=WTHMASS(xidxme,:,1);
 surf_cor_tend=zeros(size(CellVol));
 surf_cor_tend(:,:,1)=2.85e-9-WTHMASS./(DRF(:,:,1)); % the 2.85e-9 is just based on residual with TOTTTEND
@@ -545,9 +545,9 @@ Tflx_tend3d(:,:,1)=(TFLUX-surfQsw)./rhoref./3994./DRF(:,:,1)./hFacC(:,:,1);
 %clear RHS3d swfrac swfrac1 hFacC DRF
 
 % salt offline
-load('/Users/dbwhitt/OneDrive - NASA/documents/mitgcm_offline_salt_flux_avg_anoms.mat');
+load('./data/mitgcm_offline_salt_flux_avg_anoms.mat');
 SFnow=SFnow(xidxme,:,:,:);
-Smit3d=squeeze(ncread('~/OneDrive - NASA/documents/mitgcm20yr_buoyavg.nc','salt'));
+Smit3d=squeeze(ncread('./data/mitgcm20yr_buoyavg.nc','salt'));
 Smit3d=Smit3d(xidxme,:,:);
 Smit=squeeze(mean(Smit3d,1,'omitnan'));
 
