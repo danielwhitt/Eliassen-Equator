@@ -3,25 +3,25 @@
 %% Written With Matlab v2023b 
 %% Upload May 19 2025
 %% dependencies
-%~/OneDrive - NASA/documents/mitgcm_grid.mat
-%~/OneDrive - NASA/documents/mitgcm20yr_buoyavg.nc
-%~/OneDrive - NASA/documents/File_y1999_y2018_ub.nc
-%~/Downloads/wind_stress_zonal_monthly_maps.nc
-%~/Downloads/RG_ArgoClim_33pfit_2019_mean.nc
-%adcp0n110w_mon.nc
-%adcp0n140w_mon.nc
-%adcp0n170w_mon.nc
-%~/OneDrive - NASA/documents/johnson-eq-pac-adcp.nc
+%./data/mitgcm_grid.mat
+%./data/mitgcm20yr_buoyavg.nc
+%./data/File_y1999_y2018_ub.nc
+%./data/wind_stress_zonal_monthly_maps.nc
+%./data/RG_ArgoClim_33pfit_2019_mean.nc
+%./data/adcp0n110w_mon.nc
+%./data/adcp0n140w_mon.nc
+%./data/adcp0n170w_mon.nc
+%./data/johnson-eq-pac-adcp.nc
 
 clear all;
 close all;
 id='MATLAB:polyfit:RepeatedPointsOrRescale'
 disp('Wyrtki diagram direct simulation numbers...')
-vmit3d=squeeze(ncread('~/OneDrive - NASA/documents/mitgcm20yr_buoyavg.nc','v'));
-umit3d=squeeze(ncread('~/OneDrive - NASA/documents/mitgcm20yr_buoyavg.nc','u'));
-wmit3d=squeeze(ncread('~/OneDrive - NASA/documents/mitgcm20yr_buoyavg.nc','w'));
+vmit3d=squeeze(ncread('./data/mitgcm20yr_buoyavg.nc','v'));
+umit3d=squeeze(ncread('./data/mitgcm20yr_buoyavg.nc','u'));
+wmit3d=squeeze(ncread('./data/mitgcm20yr_buoyavg.nc','w'));
 
-load('~/OneDrive - NASA/documents/mitgcm_grid.mat','XC','YC','DRF');
+load('./data/mitgcm_grid.mat','XC','YC','DRF');
 
 XC=XC(41:1460,41:440)-170;
 YC=YC(41:1460,41:440);
@@ -45,8 +45,8 @@ DYC(1,1)=DYC(2,2);
 DYC(1,end)=DYC(2,end-1);
 DYC(end,end)=DYC(end-1,end-1);
 DYC(end,1)=DYC(end-1,2);
-latmit=squeeze(ncread('~/OneDrive - NASA/documents/mitgcm20yr_buoyavg.nc','latitude'));
-lonmit=squeeze(ncread('~/OneDrive - NASA/documents/mitgcm20yr_buoyavg.nc','longitude'));
+latmit=squeeze(ncread('./data/mitgcm20yr_buoyavg.nc','latitude'));
+lonmit=squeeze(ncread('./data/mitgcm20yr_buoyavg.nc','longitude'));
 
 
 disp('gcm direct...')
@@ -84,7 +84,7 @@ disp('gcm Ekman terms...')
 
 rhoref = 1035; % rho_0
 g=9.81; 
-tauxmit=double(squeeze(ncread('~/OneDrive - NASA/documents/File_y1999_y2018_ub.nc','Um_Ext')));
+tauxmit=double(squeeze(ncread('./data/File_y1999_y2018_ub.nc','Um_Ext')));
 tauxmit=squeeze(tauxmit(:,:,1)).*rhoref.*DRF(1,1,1);
 f=7.29e-5.*2.*sind(latmit);
 fg=repmat(f',[1420 1]);
@@ -95,9 +95,9 @@ Ekmantransport5sgcm=sum(DXC(10,300).*mean(-tauxmit(:,100:101)./rhoref./fg(:,100:
 disp('gcm mass balance...')
 disp('gcm hydrography terms...')
 
-zmit=squeeze(ncread('~/OneDrive - NASA/documents/mitgcm20yr_buoyavg.nc','depth'));
-Tmit3d=squeeze(double(ncread('~/OneDrive - NASA/documents/mitgcm20yr_buoyavg.nc','theta')));
-Smit3d=squeeze(double(ncread('~/OneDrive - NASA/documents/mitgcm20yr_buoyavg.nc','salt')));
+zmit=squeeze(ncread('./data/mitgcm20yr_buoyavg.nc','depth'));
+Tmit3d=squeeze(double(ncread('./data/mitgcm20yr_buoyavg.nc','theta')));
+Smit3d=squeeze(double(ncread('./data/mitgcm20yr_buoyavg.nc','salt')));
 
 Pmit=sw_pres(abs(zmit),0);
 
@@ -136,13 +136,13 @@ id='MATLAB:polyfit:RepeatedPointsOrRescale'
 disp('Risien and Chelton Ekman transports...')
 addpath ~/'OneDrive - NASA'/software/rainevent-master/cmocean/
 monms={'january','february','march','april','may','june','july','august','september','october','november','december'};
-latitudewstress=ncread('~/Downloads/wind_stress_zonal_monthly_maps.nc','latitude',[241],[80]);
-longitudewstress=ncread('~/Downloads/wind_stress_zonal_monthly_maps.nc','longitude',[769],[284]);
+latitudewstress=ncread('./data/wind_stress_zonal_monthly_maps.nc','latitude',[241],[80]);
+longitudewstress=ncread('./data/wind_stress_zonal_monthly_maps.nc','longitude',[769],[284]);
 longitudewstress=longitudewstress-360;
 
 taux=zeros(length(longitudewstress),length(latitudewstress),12);
 for mo = 1:12
-taux(:,:,mo)=ncread('~/Downloads/wind_stress_zonal_monthly_maps.nc',monms{mo},[769 241],[284 80]);
+taux(:,:,mo)=ncread('./data/wind_stress_zonal_monthly_maps.nc',monms{mo},[769 241],[284 80]);
 end
 
 [latg,long]=meshgrid(latitudewstress,longitudewstress);
@@ -167,13 +167,13 @@ disp('Argo transports...')
 g = 9.81; %gravity
 rhoref = 1029; % rho_0
 
-LATargo=smooth(double(squeeze(ncread('~/Downloads/RG_ArgoClim_33pfit_2019_mean.nc','LATITUDE',[331],[120])))',5)';
-LONargo=ncread('~/Downloads/RG_ArgoClim_33pfit_2019_mean.nc','LONGITUDE',[1033],[426]);
+LATargo=smooth(double(squeeze(ncread('./data/RG_ArgoClim_33pfit_2019_mean.nc','LATITUDE',[331],[120])))',5)';
+LONargo=ncread('./data/RG_ArgoClim_33pfit_2019_mean.nc','LONGITUDE',[1033],[426]);
 LONargo=360-LONargo;
 LONargo=-LONargo;
-Pargo=double(repmat(reshape(ncread('~/Downloads/RG_ArgoClim_33pfit_2019_mean.nc','PRESSURE'),[1 1 58]),[426 120 1]));
-Targo=double(ncread('~/Downloads/RG_ArgoClim_33pfit_2019_mean.nc','ARGO_TEMPERATURE_MEAN',[1033 331 1],[426 120 58]));
-Sargo=double(ncread('~/Downloads/RG_ArgoClim_33pfit_2019_mean.nc','ARGO_SALINITY_MEAN',[1033 331 1],[426 120 58]));
+Pargo=double(repmat(reshape(ncread('./data/RG_ArgoClim_33pfit_2019_mean.nc','PRESSURE'),[1 1 58]),[426 120 1]));
+Targo=double(ncread('./data/RG_ArgoClim_33pfit_2019_mean.nc','ARGO_TEMPERATURE_MEAN',[1033 331 1],[426 120 58]));
+Sargo=double(ncread('./data/RG_ArgoClim_33pfit_2019_mean.nc','ARGO_SALINITY_MEAN',[1033 331 1],[426 120 58]));
 
 PDargo=sw_pden(Sargo,Targo,Pargo,zeros(size(Pargo)));
 THargo=sw_ptmp(Sargo,Targo,Pargo,zeros(size(Pargo)));
@@ -234,18 +234,18 @@ Ugargo(:,2:end-1,:)=-g.*(Dargo500mrefp(:,3:end,:)-Dargo500mrefp(:,1:end-2,:))./(
 xidx=[43:53,58:63,68:78];
 xidx2=[43:53,68:78];
 
-utao110=squeeze(double(ncread('adcp0n110w_mon.nc','u_1205')));
-ztao110=ncread('adcp0n110w_mon.nc','depth');
+utao110=squeeze(double(ncread('./data/adcp0n110w_mon.nc','u_1205')));
+ztao110=ncread('./data/adcp0n110w_mon.nc','depth');
 utao110=utao110./100;
 utao110(utao110>1e1)=nan;
 utao110=nanmean(utao110,2);
-utao140=squeeze(double(ncread('adcp0n140w_mon.nc','u_1205')));
-ztao140=ncread('adcp0n140w_mon.nc','depth');
+utao140=squeeze(double(ncread('./data/adcp0n140w_mon.nc','u_1205')));
+ztao140=ncread('./data/adcp0n140w_mon.nc','depth');
 utao140=utao140./100;
 utao140(utao140>1e1)=nan;
 utao140=nanmean(utao140,2);
-utao170=squeeze(double(ncread('adcp0n170w_mon.nc','u_1205')));
-ztao170=ncread('adcp0n170w_mon.nc','depth');
+utao170=squeeze(double(ncread('./data/adcp0n170w_mon.nc','u_1205')));
+ztao170=ncread('./data/adcp0n170w_mon.nc','depth');
 utao170=utao170./100;
 utao170(utao170>1e1)=nan;
 utao170=nanmean(utao170,2);
@@ -337,12 +337,12 @@ dUdxargo50to200m=.1666.*111300.*sum(trapz(abs(Zargo(10,6:20)),dUdxargo(31:90,6:2
 %
 
 disp('Zonal convergences from Johnson ADCP data...')
-Ujohnson=ncread('~/OneDrive - NASA/documents/johnson-eq-pac-adcp.nc','UM');
+Ujohnson=ncread('./data/johnson-eq-pac-adcp.nc','UM');
 
-PDjohnson=ncread('~/OneDrive - NASA/documents/johnson-eq-pac-adcp.nc','SIGMAM');
-XLONjohnson=ncread('~/OneDrive - NASA/documents/johnson-eq-pac-adcp.nc','XLON');
+PDjohnson=ncread('./data/johnson-eq-pac-adcp.nc','SIGMAM');
+XLONjohnson=ncread('./data/johnson-eq-pac-adcp.nc','XLON');
 XLONjohnson=XLONjohnson(5:10);
-YLATjohnson=ncread('~/OneDrive - NASA/documents/johnson-eq-pac-adcp.nc','YLAT11_101');
+YLATjohnson=ncread('./data/johnson-eq-pac-adcp.nc','YLAT11_101');
 dUdxjohnson=zeros(91,50);
 warning('off',id)
 
@@ -358,7 +358,7 @@ for i = 1:91
 end
 warning('on',id)
 
-ZDEPjohnson=ncread('~/OneDrive - NASA/documents/johnson-eq-pac-adcp.nc','ZDEP1_50');
+ZDEPjohnson=ncread('./data/johnson-eq-pac-adcp.nc','ZDEP1_50');
 Ujohnson=squeeze(mean(Ujohnson(5:10,:,:),1,'omitnan'));
 PDjohnson=squeeze(mean(PDjohnson(5:10,:,:),1,'omitnan'));
 
