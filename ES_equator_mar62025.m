@@ -1,7 +1,8 @@
 
 %% Dan Whitt (daniel.b.whitt@nasa.gov) Jul 11 2024
 %% Copyright Dan Whitt
-%% Written With Matlab v2023b Fig 6 and 15
+%% Written With Matlab v2023b 
+%% Second upload May 19 2025
 %% depednencies:
 % ~/OneDrive - NASA/documents/mitgcm_grid.mat
 % ~/OneDrive - NASA/documents/mitgcm_RF.mat
@@ -14,7 +15,7 @@
 % ~/OneDrive - NASA/documents/mitgcm_suf_avg.nc
 % ~/OneDrive - NASA/documents/mitgcm_hb_avg.nc
 clear all
-%close all
+close all
 restoredefaultpath;
 addpath ~/'OneDrive - NASA'/software/rainevent-master/seawater/
 addpath ~/'OneDrive - NASA'/software/rainevent-master/cmocean/
