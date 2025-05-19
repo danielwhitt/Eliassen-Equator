@@ -3,7 +3,7 @@
 %% Copyright Dan Whitt
 %% Written With Matlab v2023b 
 %% Second upload May 19 2025
-%% depednencies:
+%% dependencies:
 % ./data/mitgcm_grid.mat
 % ./data/mitgcm_RF.mat
 % ./data/mitgcm_grid_3.mat
