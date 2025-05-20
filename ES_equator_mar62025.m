@@ -349,7 +349,7 @@ wtp=((abs(ymit([51:140,261:350]))-abs(ymit(51)))./(abs(ymit(140))-abs(ymit(51)))
 wtg=1-wtp;
 vgmitf(i,[51:140,261:350])=wtg.*squeeze(vgmit(i,[51:140,261:350]))+wtp.*squeeze(vpoly(i,[51:140,261:350]));
 vgmitf(i,141:260)=vpoly(i,[141:260]);
-vgmitf(i,:)=smooth(vgmitf(i,:),21);
+vgmitf(i,:)=smooth(vgmitf(i,:),11); %0.5 deg
 end
 dvgdy=zeros(size(vmit'));
 dvgdy(:,2:end-1)=squeeze(vgmitf(:,3:end)-vgmitf(:,1:end-2))./(y_gm(:,3:end)-y_gm(:,1:end-2));
