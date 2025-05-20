@@ -1179,7 +1179,7 @@ xlim([-8 8])
 contour(y_g./111300,z_g,real(matESH(psivecEB)),linspace(-5,-0.2,25),'--','linewidth',1,'color','w'); 
 contour(y_g./111300,z_g,real(matESH(psivecEB)),linspace(0,5,26),'-','linewidth',1,'color','w'); 
 grid on
-title('(c) Eliassen w_a [Eddy fluxes buoyancy] (m/d)','FontSize',12,'FontWeight','normal');
+title('(b) Eliassen w_a [Eddy fluxes buoyancy] (m/d)','FontSize',12,'FontWeight','normal');
 ylabel('Depth (m)')
 xlabel('Latitude (^oN)');
 set(gca,'FontSize',12);
