@@ -351,8 +351,8 @@ wmitmapasym2(:,201:400)=wmitmapasym(:,201:400)-wmitmapasym(:,200:-1:1);
 [w50asymlatmax,idxmax2]=max(wmitmapasym2(:,201:300),[],2);
 lattemp=latmit(201:400);
 plot(XC(1:5:end,200),latmit(100+idxmax(1:5:end)),'w.','markersize',5)
-plot(XC(1:5:end,200),lattemp(idxmax2(1:5:end)),'b.','markersize',5)
-plot(XC(1:5:end,200),-lattemp(idxmax2(1:5:end)),'b.','markersize',5)
+plot(XC(1:5:end,200),lattemp(idxmax2(1:5:end)),'magenta.','markersize',5)
+plot(XC(1:5:end,200),-lattemp(idxmax2(1:5:end)),'magenta.','markersize',5)
 
 set(gca,'XTick',[-160:10:-100])
 set(gca,'XTickLabels',{'160','150','140','130','120','110','100'})
@@ -407,16 +407,21 @@ annotation(gcf,'textarrow',[0.449166666666667 0.496666666666667],...
     'FontSize',18,...
     'FontName','Helvetica Neue');
 
+
+
 % Create textarrow
 annotation(gcf,'textarrow',[0.710000000000003 0.688333333333333],...
-    [0.434613063810528 0.48363252375924],'Color',[0 0 1],...
-    'String',{'Latitude of Maximum Asymmetry (blue dots)'},...
+    [0.434613063810528 0.48363252375924],'Color','k',...
+    'String',{'Latitude of Maximum Asymmetry (magenta dots)'},...
     'FontSize',18,...
     'FontName','Helvetica Neue');
 
+
 % Create arrow
 annotation(gcf,'arrow',[0.710833333333337 0.684166666666667],...
-    [0.435663146779301 0.5480464625132],'Color',[0 0 1]);
+    [0.435663146779301 0.5480464625132],'Color','k');
+
+
 
 % Create textarrow
 annotation(gcf,'textarrow',[0.435833333333333 0.436666666666667],...
