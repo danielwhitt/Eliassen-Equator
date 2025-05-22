@@ -375,7 +375,7 @@ caxis(caxis)
 [c,h]=contour(1:12,latmit,squeeze(u15mmit),-1:.1:1,'k-','linewidth',1);
 clabel(c,h,'fontsize',12)
 hold on
-plot(1:12,latmit(latmidx),'r.','markersize',12,'linestyle','none')
+plot(1:12,latmit(latmidx),'w.','markersize',12,'linestyle','none')
 
 subplot(1,3,2)
 contourf(1:12,latmit,squeeze(VVmit15m)-vmit15mc(:,1:12).^2,0:.005:.1);
@@ -398,7 +398,7 @@ caxis(caxis)
 [c,h]=contour(1:12,latmit,squeeze(u15mmit),-1:.1:1,'k-','linewidth',1);
 clabel(c,h,'fontsize',12)
 hold on
-plot(1:12,latmit(latmidx),'r.','markersize',12,'linestyle','none')
+plot(1:12,latmit(latmidx),'w.','markersize',12,'linestyle','none')
 
 
 subplot(1,3,3)
@@ -418,7 +418,7 @@ caxis(caxis)
 [c,h]=contour(1:12,latmit,squeeze(u15mmit),-1:.1:1,'k-','linewidth',1);
 clabel(c,h,'fontsize',12)
 hold on
-plot(1:12,latmit(latmidx),'r.','markersize',12,'linestyle','none')
+plot(1:12,latmit(latmidx),'w.','markersize',12,'linestyle','none')
 colormap(gca,cmocean('balance',20));
 
 print(gcf,'MITgcmclim_seasonalcycle_U2andV2andUV.png','-dpng','-r200');
@@ -700,9 +700,9 @@ w50mmitallasym2(201:400,:)=w50mmitallsym(201:400,:)-w50mmitallasym(200:-1:1,:);
 [~,idxmax2a]=max(w50mmitallasym2(201:400,:),[],1);
 lattemp=latmit(201:400);
 hold on
-plot(timemitmat,latmit(latmidxa),'r.','markersize',12);
+plot(timemitmat,latmit(latmidxa),'w.','markersize',12);
 %plot(timemitmat,lattemp(idxmax2a),'bo','markersize',12);
-%plot(timemitmat,-lattemp(idxmax2a),'b.','markersize',12);
+%plot(timemitmat,-lattemp(idxmax2a),'magenta.','markersize',12);
 
 
 subplot(5,1,[4 5]),...
@@ -724,7 +724,7 @@ colormap(gca,cmocean('balance',40))
 caxis(caxis);
 hold on;
 [c,h]=contour(timemitmat,latmit,wmit50mc,-1.5:.5:1.5,'k-');
-plot(timemitmat,latmit(latmidxa),'r.','markersize',12);
+plot(timemitmat,latmit(latmidxa),'w.','markersize',12);
 
 clabel(c,h)
 %plot(linspace(datenum(1999,1,1),datenum(2019,1,1),3),1.5.*ones(3,1),'magenta-','linewidth',1)
@@ -870,9 +870,9 @@ grid on
 [~,idxmax2]=max(w50mmitasym2(201:400,:),[],1);
 lattemp=latmit(201:400);
 hold on
-plot(1:12,latmit(latmidx),'r.','markersize',12);
-plot(1:12,lattemp(idxmax2),'b.','markersize',12);
-plot(1:12,-lattemp(idxmax2),'b.','markersize',12);
+plot(1:12,latmit(latmidx),'w.','markersize',12);
+plot(1:12,lattemp(idxmax2),'magenta.','markersize',12);
+plot(1:12,-lattemp(idxmax2),'magenta.','markersize',12);
 
 caxis(caxis);
 [c,h]=contour(1:12,latmit,tauxmit,linspace(-.1,.1,21),'w');
@@ -903,9 +903,9 @@ grid on
 %[~,idxmax2]=max(w50mmitasym2(201:400,:),[],1);
 %lattemp=latmit(201:400);
 hold on
-plot(1:12,latmit(latmidx),'r.','markersize',12);
-plot(1:12,lattemp(idxmax2),'b.','markersize',12);
-plot(1:12,-lattemp(idxmax2),'b.','markersize',12);
+plot(1:12,latmit(latmidx),'w.','markersize',12);
+plot(1:12,lattemp(idxmax2),'magenta.','markersize',12);
+plot(1:12,-lattemp(idxmax2),'magenta.','markersize',12);
 
 caxis(caxis);
 [c,h]=contour(1:12,latmit,tauxmit,linspace(-.1,.1,21),'w');
@@ -1028,9 +1028,9 @@ clear lattemp idxmax idxmax2
 [~,idxmax]=max(wmitmap,[],2);
 [~,idxmax2]=max(wmitmapasym2(:,201:400),[],2);
 lattemp=latmit(201:400);
-plot(lonmit(1:5:end),latmit(idxmax(1:5:end)),'r.','markersize',5)
-plot(lonmit(1:5:end),lattemp(idxmax2(1:5:end)),'b.','markersize',5)
-plot(lonmit(1:5:end),-lattemp(idxmax2(1:5:end)),'b.','markersize',5)
+plot(lonmit(1:5:end),latmit(idxmax(1:5:end)),'w.','markersize',5)
+plot(lonmit(1:5:end),lattemp(idxmax2(1:5:end)),'magenta.','markersize',5)
+plot(lonmit(1:5:end),-lattemp(idxmax2(1:5:end)),'magenta.','markersize',5)
 
 % Create arrow
 end
